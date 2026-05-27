@@ -16,10 +16,11 @@ public class MainProgram {
                 break;
             } else {
                 System.out.println("Input the age recommendation: ");
-                //age = Integer.valueOf(scanner.nextLine());
+                int age = Integer.valueOf(scanner.nextLine());
                 books book = new books(word, age);
                 booksList.add(book);
             }
         }
+        
     }
 }
