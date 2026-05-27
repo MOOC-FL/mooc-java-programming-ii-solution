@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 //import java.util.HashMap;
 
@@ -13,8 +14,14 @@ public class MainProgram {
             String word = scanner.nextLine();
             // int age = Integer.valueOf(scanner.nextLine());
             if (word.isEmpty()) {
-                System.out.println(booksList.size() + " Books in total: ");
+                /*System.out.println(booksList.size() + " Books in total: ");
                 System.out.println("Books: ");
+                for (books book : booksList) {
+                    System.out.println(book);
+                }*/
+               System.out.println(booksList.size() + " Books in total: ");
+               Comparator<books> comparator = Comparator.comparing(books::getAge);
+                booksList.sort(comparator);
                 for (books book : booksList) {
                     System.out.println(book);
                 }
@@ -26,6 +33,7 @@ public class MainProgram {
                 books book = new books(word, age);
                 booksList.add(book);
             }
+
         }
 
     }

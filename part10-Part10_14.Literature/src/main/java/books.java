@@ -14,6 +14,9 @@ public class books {
         this.name = name;
         this.age = age;
     }
+    public int getAge() {
+        return this.age;
+    }
     @Override
     public String toString() {
         return this.name + " (recommended for " + this.age + " year-olds or older)";
