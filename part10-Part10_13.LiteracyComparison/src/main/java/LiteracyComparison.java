@@ -1,51 +1,38 @@
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.util.stream.Stream;
+import java.util.Comparator;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class LiteracyComparison {
-    
-    public static void main(String[] args) {
-        List<LiteracyData> dataList = new ArrayList<>();
-        
-        try (BufferedReader reader = new BufferedReader(new FileReader("literacy.csv"))) {
-            String line;
-            
-            while ((line = reader.readLine()) != null) {
-                String[] pieces = line.split(",");
-                
-                // Trim whitespace from each piece
-                for (int i = 0; i < pieces.length; i++) {
-                    pieces[i] = pieces[i].trim();
-                }
-                
-                // Extract gender information from the theme field
-                String theme = pieces[0];
-                String genderInfo = pieces[2];
-                String country = pieces[3];
-                int year = Integer.parseInt(pieces[4]);
-                double literacyPercent = Double.parseDouble(pieces[5]);
-                
-                // Extract just the gender from the gender field
-                String gender = genderInfo.contains("female") ? "female" : "male";
-                
-                dataList.add(new LiteracyData(country, year, gender, literacyPercent));
-            }
-            
-        } catch (IOException e) {
-            System.out.println("Error reading file: " + e.getMessage());
-            return;
-        }
-        
-        // Sort by literacy percentage
-        Collections.sort(dataList);
-        
-        // Print the results
-        for (LiteracyData data : dataList) {
-            System.out.println(data);
-        }
+
+  public static void main(String[] args) {
+    try {
+      Files.lines(Paths.get("literacy.csv")).map(line -> {
+        String[] parts = line.split(",");
+        String name = parts[3].trim();
+        int year = Integer.valueOf(parts[4].trim());
+        String gender = parts[2].split(" ")[1];
+        double rate = Double.valueOf(parts[5]);
+
+        return new Country(name, year, gender, rate);
+
+      }).sorted(Comparator.comparing(Country::getRate)).forEach(country -> System.out.println(country));
+    } catch (Exception e) {
+      System.out.println("Error: " + e);
     }
-    
+  }
 }
+        return 0;
+
+      })
+          .forEach(country -> System.out.println(country));
+
+    } catch (Exception e) {
+      System.out.println("Error: " + e);
+    }
+  }
+}
+
