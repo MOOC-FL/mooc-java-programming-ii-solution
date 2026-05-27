@@ -11,9 +11,15 @@ public class MainProgram {
         while (true) {
             System.out.println("Input the name of the book, empty stops: ");
             String word = scanner.nextLine();
-            //int age = Integer.valueOf(scanner.nextLine());
+            // int age = Integer.valueOf(scanner.nextLine());
             if (word.isEmpty()) {
+                System.out.println(booksList.size() + " Books in total: ");
+                System.out.println("Books: ");
+                for (books book : booksList) {
+                    System.out.println(book);
+                }
                 break;
+
             } else {
                 System.out.println("Input the age recommendation: ");
                 int age = Integer.valueOf(scanner.nextLine());
@@ -21,6 +27,7 @@ public class MainProgram {
                 booksList.add(book);
             }
         }
-        
+
     }
+
 }
