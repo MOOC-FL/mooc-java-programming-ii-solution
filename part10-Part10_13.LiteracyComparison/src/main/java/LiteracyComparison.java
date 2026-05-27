@@ -1,29 +1,51 @@
-
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class LiteracyComparison {
-
+    
     public static void main(String[] args) {
-        //ArrayList<Country> countries = new ArrayList<>();
-        try {
-            Files.lines(Paths.get("literacy.csv"))
-                    .skip(1) // Skip the header line
-                    .map(line -> line.split(","))
-                    .filter(parts -> parts.length == 3) // Ensure there are exactly 3 parts
-                    .forEach(parts -> {
-                        String string = "Adult literacy rate, population 15+ years, female (%),Zimbabwe,2015,85.28513";
-                        String[] pieces = string.split(",");
-                        // now pieces[0] equals "Adult literacy rate"
-                        // pieces[1] equals " population 15+ years"
-                        // etc.
-
-                        // to remove whitespace, use the trim() method:
-                        pieces[1] = pieces[1].trim();
-                    });
+        List<LiteracyData> dataList = new ArrayList<>();
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader("literacy.csv"))) {
+            String line;
+            
+            while ((line = reader.readLine()) != null) {
+                String[] pieces = line.split(",");
+                
+                // Trim whitespace from each piece
+                for (int i = 0; i < pieces.length; i++) {
+                    pieces[i] = pieces[i].trim();
+                }
+                
+                // Extract gender information from the theme field
+                String theme = pieces[0];
+                String genderInfo = pieces[2];
+                String country = pieces[3];
+                int year = Integer.parseInt(pieces[4]);
+                double literacyPercent = Double.parseDouble(pieces[5]);
+                
+                // Extract just the gender from the gender field
+                String gender = genderInfo.contains("female") ? "female" : "male";
+                
+                dataList.add(new LiteracyData(country, year, gender, literacyPercent));
+            }
+            
         } catch (IOException e) {
-            System.out.println("Error reading the file: " + e.getMessage());
+            System.out.println("Error reading file: " + e.getMessage());
+            return;
+        }
+        
+        // Sort by literacy percentage
+        Collections.sort(dataList);
+        
+        // Print the results
+        for (LiteracyData data : dataList) {
+            System.out.println(data);
         }
     }
+    
 }
