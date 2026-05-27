@@ -20,7 +20,7 @@ public class MainProgram {
                     System.out.println(book);
                 }*/
                System.out.println(booksList.size() + " Books in total: ");
-               Comparator<books> comparator = Comparator.comparing(books::getAge);
+               Comparator<books> comparator = Comparator.comparing(books::getAge).thenComparing(books::getName);
                 booksList.sort(comparator);
                 for (books book : booksList) {
                     System.out.println(book);
